@@ -1,21 +1,20 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="UTF-8">
-		<title>{{.Title}}</title>
-		<script src="https://unpkg.com/htmx.org@1.9.4" integrity="sha384-zUfuhFKKZCbHTY6aRR46gxiqszMk5tcHjsVFxnUo8VMus4kHGVdIYVbOYYNlKmHV" crossorigin="anonymous"></script>
-	</head>
-	<body>
-	 Hello
-	 <div id="response-div"></div>
-	 <button 
-	 	hx-post="/button-click"
-    hx-trigger="click"
-    hx-target="#response-div"
-    hx-swap="outerHTML"
->
-    Click Me!
-</button>
 
-	</body>
+<head>
+	<meta charset="UTF-8">
+	<title>{{.Title}}</title>
+	<script src="https://unpkg.com/htmx.org@1.9.4"
+		integrity="sha384-zUfuhFKKZCbHTY6aRR46gxiqszMk5tcHjsVFxnUo8VMus4kHGVdIYVbOYYNlKmHV"
+		crossorigin="anonymous"></script>
+</head>
+
+<body>
+	<div id="response-div"></div>
+	<div hx-post="/button-click" hx-trigger="click" hx-target="#response-div" hx-swap="outerHTML">
+		Click Me!
+	</div>
+
+</body>
+
 </html>
