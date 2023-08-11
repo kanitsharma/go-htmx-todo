@@ -9,3 +9,7 @@ INSERT INTO todos(
   ?, ?
 )
 RETURNING *;
+
+-- name: DeleteTodo :exec
+DELETE FROM todos 
+WHERE name = ?;

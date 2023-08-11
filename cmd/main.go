@@ -59,12 +59,16 @@ func main() {
 		t.Execute(w, data)
 	})
 	http.HandleFunc("/add-todos", func(w http.ResponseWriter, r *http.Request) {
+		r.ParseForm()
+		log.Print(r.Form)
 		todo, err := queries.CreateTodo(ctx, todos.CreateTodoParams{
-			Name: "Dummy Todo",
+			Name: r.Form["name"][0],
 		})
 		if err != nil {
 			log.Fatal(err.Error())
 		}
+		log.Print(todo)
+
 		data := map[string]interface{}{
 			"Todos": append(make([]todos.Todo, 0), todo),
 		}
@@ -74,6 +78,12 @@ func main() {
 		}
 		t.Execute(w, data)
 	})
-
+	http.HandleFunc("/delete-todo", func(w http.ResponseWriter, r *http.Request) {
+		name := r.URL.Query().Get("name")
+		err := queries.DeleteTodo(ctx, name)
+		if err != nil {
+			log.Fatal(err.Error())
+		}
+	})
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }

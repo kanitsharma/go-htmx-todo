@@ -31,6 +31,16 @@ func (q *Queries) CreateTodo(ctx context.Context, arg CreateTodoParams) (Todo, e
 	return i, err
 }
 
+const deleteTodo = `-- name: DeleteTodo :exec
+DELETE FROM todos 
+WHERE name = ?
+`
+
+func (q *Queries) DeleteTodo(ctx context.Context, name string) error {
+	_, err := q.db.ExecContext(ctx, deleteTodo, name)
+	return err
+}
+
 const listTodos = `-- name: ListTodos :many
 SELECT id, name, status FROM todos 
 ORDER BY name

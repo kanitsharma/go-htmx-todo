@@ -1,5 +1,8 @@
-<ul>
-  {{range .Todos}}
-  <li>{{.Name}}</li>
-  {{end}}
-</ul>
+{{range .Todos}}
+<li id="{{.Name}}" style="display:flex; flex-direction: row; align-items: center;">
+  <h2>
+    {{.Name}}
+  </h2>
+  <button hx-post="/delete-todo?name={{.Name}}" hx-swap="delete" hx-target="#{{.Name}}"> X</button>
+</li>
+{{end}}
