@@ -30,11 +30,6 @@ func main() {
 	}
 
 	queries := todos.New(db)
-	todos, err := queries.ListTodos(ctx)
-	if err != nil {
-		log.Fatal(err.Error())
-	}
-	log.Print(todos)
 
 	data := map[string]interface{}{
 		"Title": "testpage",
@@ -48,12 +43,36 @@ func main() {
 		}
 		t.Execute(w, data)
 	})
-	http.HandleFunc("/button-click", func(w http.ResponseWriter, r *http.Request) {
-		t, err := template.ParseFiles(path.Join(pwd, "layouts/response.html"))
+	http.HandleFunc("/todos", func(w http.ResponseWriter, r *http.Request) {
+		todos, err := queries.ListTodos(ctx)
 		if err != nil {
 			log.Fatal(err.Error())
 		}
-		t.Execute(w, nil)
+		data := map[string]interface{}{
+			"Todos": todos,
+		}
+		log.Print(todos)
+		t, err := template.ParseFiles(path.Join(pwd, "layouts/todos.html"))
+		if err != nil {
+			log.Fatal(err.Error())
+		}
+		t.Execute(w, data)
+	})
+	http.HandleFunc("/add-todos", func(w http.ResponseWriter, r *http.Request) {
+		todo, err := queries.CreateTodo(ctx, todos.CreateTodoParams{
+			Name: "Dummy Todo",
+		})
+		if err != nil {
+			log.Fatal(err.Error())
+		}
+		data := map[string]interface{}{
+			"Todos": append(make([]todos.Todo, 0), todo),
+		}
+		t, err := template.ParseFiles(path.Join(pwd, "layouts/todos.html"))
+		if err != nil {
+			log.Fatal(err.Error())
+		}
+		t.Execute(w, data)
 	})
 
 	log.Fatal(http.ListenAndServe(":8080", nil))

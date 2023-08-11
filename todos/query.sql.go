@@ -7,7 +7,29 @@ package todos
 
 import (
 	"context"
+	"database/sql"
 )
+
+const createTodo = `-- name: CreateTodo :one
+INSERT INTO todos(
+  name, status
+) VALUES (
+  ?, ?
+)
+RETURNING id, name, status
+`
+
+type CreateTodoParams struct {
+	Name   string
+	Status sql.NullString
+}
+
+func (q *Queries) CreateTodo(ctx context.Context, arg CreateTodoParams) (Todo, error) {
+	row := q.db.QueryRowContext(ctx, createTodo, arg.Name, arg.Status)
+	var i Todo
+	err := row.Scan(&i.ID, &i.Name, &i.Status)
+	return i, err
+}
 
 const listTodos = `-- name: ListTodos :many
 SELECT id, name, status FROM todos 

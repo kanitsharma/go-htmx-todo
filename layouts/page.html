@@ -10,11 +10,11 @@
 </head>
 
 <body>
-	<div id="response-div"></div>
-	<div hx-post="/button-click" hx-trigger="click" hx-target="#response-div" hx-swap="outerHTML">
-		Click Me!
-	</div>
+	<button hx-post="/add-todos" hx-trigger="click" hx-target="#todos-container" hx-swap="afterend">
+		Add Todo
+	</button>
 
+	<div hx-get="/todos" hx-trigger="load" hx-target="this" hx-swap="innerHTML" id="todos-container">
 </body>
 
 </html>

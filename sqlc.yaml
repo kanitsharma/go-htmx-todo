@@ -1,8 +1,8 @@
 version: 2
 sql:
   - engine: "sqlite"
-    schema: "schema.sql"
-    queries: "query.sql"
+    schema: "cmd/db/schema.sql"
+    queries: "cmd/db/query.sql"
     gen:
       go:
         package: "todos"
